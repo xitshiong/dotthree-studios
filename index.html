@@ -89,7 +89,7 @@
             top: 0;
             left: 0;
             right: 0;
-            z-index: 50;
+            z-index: 200;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -101,12 +101,14 @@
             display: flex;
             align-items: center;
             text-decoration: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--cream);
+            letter-spacing: 0.02em;
         }
 
-        .nav-logo-img {
-            height: 44px;
-            width: auto;
-            display: block;
+        .nav-logo span {
+            color: var(--orange);
         }
 
         .nav-links {
@@ -860,9 +862,7 @@
 
     <!-- NAV -->
     <nav>
-        <a href="#" class="nav-logo">
-            <img src="logo.png" alt=".3 Studios" class="nav-logo-img">
-        </a>
+        <a href="#" class="nav-logo"><span>.</span>3</a>
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
             <li><a href="#services">Services</a></li>
