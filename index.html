@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.3 Studios — Do the Hard Thing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;1,300&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --orange: #FF5C1A;
+            --dark: #1e1e1e;
+            --darker: #141414;
+            --cream: #F0EDE4;
+            --mid: #2a2a2a;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--dark);
+            color: var(--cream);
+            font-family: 'Barlow', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* CUSTOM CURSOR */
+        .cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border: 1.5px solid var(--orange);
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%) rotate(45deg);
+            transition: transform 0.12s ease, width 0.12s, height 0.12s;
+        }
+
+        .cursor-ring {
+            position: fixed;
+            width: 32px;
+            height: 32px;
+            border: 1px solid rgba(255, 92, 26, 0.45);
+            pointer-events: none;
+            z-index: 9998;
+            transition: width 0.2s, height 0.2s, opacity 0.2s;
+            animation: diamondSpin 14s linear infinite;
+        }
+
+        @keyframes diamondSpin {
+            from {
+                transform: translate(-50%, -50%) rotate(45deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(405deg);
+            }
+        }
+
+        /* GRAIN OVERLAY */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.5;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 3rem;
+            mix-blend-mode: normal;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .nav-logo-img {
+            height: 44px;
+            width: auto;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(240, 237, 228, 0.5);
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--orange);
+        }
+
+        .nav-cta {
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--orange);
+            border: 1px solid var(--orange);
+            padding: 0.5rem 1.25rem;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .nav-cta:hover {
+            background: var(--orange);
+            color: var(--dark);
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr;
+            position: relative;
+            overflow: hidden;
+            padding: 0 3rem;
+        }
+
+        .hero-grid-lines {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .hero-grid-lines::before {
+            content: '';
+            position: absolute;
+            left: 3rem;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--orange);
+            opacity: 0.6;
+        }
+
+        .hero-grid-lines::after {
+            content: '';
+            position: absolute;
+            left: calc(3rem + 40px);
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--orange);
+            opacity: 0.2;
+        }
+
+        .hero-inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: 5rem;
+            padding-top: 9rem;
+            padding-left: 6rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tag {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(240, 237, 228, 0.4);
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.2s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(6rem, 16vw, 15rem);
+            line-height: 0.88;
+            letter-spacing: -0.01em;
+            color: var(--cream);
+            opacity: 0;
+            animation: fadeUp 1s 0.4s forwards;
+        }
+
+        .hero-title .accent {
+            color: var(--orange);
+        }
+
+        .hero-subtitle-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-top: 2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.7s forwards;
+        }
+
+        .hero-sub {
+            font-size: clamp(0.85rem, 1.2vw, 1rem);
+            line-height: 1.7;
+            max-width: 360px;
+            color: rgba(240, 237, 228, 0.55);
+        }
+
+        .hero-index {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            color: rgba(240, 237, 228, 0.06);
+            line-height: 1;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 2.5rem;
+            right: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 1.1s forwards;
+        }
+
+        .hero-scroll span {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(240, 237, 228, 0.3);
+            writing-mode: vertical-rl;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--orange), transparent);
+            animation: scrollPulse 2s infinite;
+        }
+
+        @keyframes scrollPulse {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* MARQUEE */
+        .marquee-wrapper {
+            background: var(--cream);
+            overflow: hidden;
+            position: relative;
+            border-top: 1px solid rgba(30, 30, 30, 0.08);
+            border-bottom: 1px solid rgba(30, 30, 30, 0.08);
+        }
+
+        .marquee-row {
+            padding: 0.7rem 0;
+            overflow: hidden;
+        }
+
+        .marquee-row--top {
+            border-bottom: 1px solid rgba(30, 30, 30, 0.1);
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 0;
+            width: max-content;
+            animation: marquee 22s linear infinite;
+        }
+
+        .marquee-track--rev {
+            animation: marqueeRev 16s linear infinite;
+        }
+
+        .marquee-item {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            letter-spacing: 0.05em;
+            color: var(--dark);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+
+        .marquee-item--alt {
+            font-family: 'Barlow', sans-serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--orange);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            padding: 0 1.8rem;
+        }
+
+        .marquee-sep {
+            color: rgba(30, 30, 30, 0.2);
+            margin: 0 0.25rem;
+        }
+
+        .marquee-sep--alt {
+            color: rgba(255, 92, 26, 0.35);
+            margin: 0 0.25rem;
+        }
+
+        @keyframes marquee {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        @keyframes marqueeRev {
+            from {
+                transform: translateX(-50%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        /* ABOUT / WHAT WE DO */
+        .section {
+            padding: 8rem 3rem;
+            position: relative;
+        }
+
+        .section-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            max-width: 60px;
+            height: 1px;
+            background: var(--orange);
+            opacity: 0.4;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: start;
+        }
+
+        .about-left h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3.5rem, 7vw, 6rem);
+            line-height: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .about-right {
+            padding-top: 1rem;
+        }
+
+        .about-right p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(240, 237, 228, 0.65);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-right p strong {
+            color: var(--cream);
+            font-weight: 600;
+        }
+
+        /* SERVICES */
+        .services-section {
+            padding: 0 3rem 8rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid rgba(240, 237, 228, 0.1);
+        }
+
+        .service-card {
+            padding: 3rem 2rem;
+            border-right: 1px solid rgba(240, 237, 228, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+
+        .service-card:last-child {
+            border-right: none;
+        }
+
+        .service-card:hover {
+            background: rgba(255, 92, 26, 0.04);
+        }
+
+        .service-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.85rem;
+            color: var(--orange);
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            line-height: 1;
+            margin-bottom: 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        .service-desc {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: rgba(240, 237, 228, 0.5);
+        }
+
+        .service-arrow {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(240, 237, 228, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s, border-color 0.2s;
+            font-size: 0.85rem;
+            color: var(--orange);
+        }
+
+        .service-card:hover .service-arrow {
+            opacity: 1;
+            border-color: var(--orange);
+        }
+
+        /* ENGINES / PRICING */
+        .engines-section {
+            padding: 8rem 3rem;
+            background: var(--darker);
+            position: relative;
+        }
+
+        .engines-intro {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 5rem;
+            align-items: end;
+        }
+
+        .engines-intro h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            line-height: 0.9;
+        }
+
+        .engines-intro p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: rgba(240, 237, 228, 0.55);
+        }
+
+        .engines-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .engine-card {
+            background: var(--mid);
+            padding: 2.5rem;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .engine-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .engine-card.featured {
+            background: var(--orange);
+        }
+
+        .engine-tag {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 2rem;
+        }
+
+        .engine-card.featured .engine-tag {
+            color: var(--dark);
+            opacity: 0.7;
+        }
+
+        .engine-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .engine-card.featured .engine-name {
+            color: var(--dark);
+        }
+
+        .engine-price {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            line-height: 1;
+            margin-bottom: 2rem;
+            color: var(--cream);
+        }
+
+        .engine-card.featured .engine-price {
+            color: var(--dark);
+        }
+
+        .engine-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .engine-features li {
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: rgba(240, 237, 228, 0.6);
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .engine-features li::before {
+            content: '–';
+            position: absolute;
+            left: 0;
+            color: var(--orange);
+        }
+
+        .engine-card.featured .engine-features li {
+            color: rgba(30, 30, 30, 0.75);
+        }
+
+        .engine-card.featured .engine-features li::before {
+            color: var(--dark);
+        }
+
+        .engine-cta {
+            display: inline-block;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid rgba(240, 237, 228, 0.25);
+            color: var(--cream);
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+
+        .engine-cta:hover {
+            background: var(--cream);
+            color: var(--dark);
+            border-color: var(--cream);
+        }
+
+        .engine-card.featured .engine-cta {
+            border-color: var(--dark);
+            color: var(--dark);
+            background: transparent;
+        }
+
+        .engine-card.featured .engine-cta:hover {
+            background: var(--dark);
+            color: var(--orange);
+        }
+
+        .engine-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            background: var(--dark);
+            color: var(--orange);
+            padding: 0.3rem 0.75rem;
+        }
+
+        /* MANIFESTO */
+        .manifesto-section {
+            padding: 8rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .manifesto-bg {
+            position: absolute;
+            inset: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(10rem, 20vw, 18rem);
+            color: rgba(255, 92, 26, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .manifesto-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .manifesto-content blockquote {
+            font-family: 'Barlow', sans-serif;
+            font-style: italic;
+            font-weight: 300;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            line-height: 1.5;
+            color: rgba(240, 237, 228, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        .manifesto-content cite {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--orange);
+            font-style: normal;
+        }
+
+        /* CONTACT */
+        .contact-section {
+            padding: 8rem 3rem;
+            background: var(--darker);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: start;
+        }
+
+        .contact-left h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 7vw, 6rem);
+            line-height: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .contact-left p {
+            font-size: 0.9rem;
+            color: rgba(240, 237, 228, 0.5);
+            line-height: 1.8;
+            max-width: 300px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(240, 237, 228, 0.4);
+        }
+
+        .form-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(240, 237, 228, 0.2);
+            padding: 0.75rem 0;
+            color: var(--cream);
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 300;
+            outline: none;
+            transition: border-color 0.2s;
+            width: 100%;
+        }
+
+        .form-input:focus {
+            border-color: var(--orange);
+        }
+
+        .form-input::placeholder {
+            color: rgba(240, 237, 228, 0.2);
+        }
+
+        .form-submit {
+            background: var(--orange);
+            border: none;
+            color: var(--dark);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            padding: 1rem 2.5rem;
+            cursor: none;
+            align-self: flex-start;
+            margin-top: 0.5rem;
+            transition: opacity 0.2s;
+        }
+
+        .form-submit:hover {
+            opacity: 0.85;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 2.5rem 3rem;
+            border-top: 1px solid rgba(240, 237, 228, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            color: rgba(240, 237, 228, 0.3);
+        }
+
+        .footer-logo span {
+            color: var(--orange);
+        }
+
+        .footer-copy {
+            font-size: 0.72rem;
+            color: rgba(240, 237, 228, 0.2);
+            letter-spacing: 0.1em;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            font-size: 0.72rem;
+            color: rgba(240, 237, 228, 0.3);
+            text-decoration: none;
+            letter-spacing: 0.08em;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--orange);
+        }
+
+        /* HORIZONTAL RULE */
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: rgba(240, 237, 228, 0.08);
+            margin: 0 3rem;
+            width: calc(100% - 6rem);
+        }
+
+        /* REVEAL ANIMATION */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursor-ring"></div>
+
+    <!-- NAV -->
+    <nav>
+        <a href="#" class="nav-logo">
+            <img src="Screenshot 2026-04-01 at 7.06.08 PM.png" alt=".3 Studios" class="nav-logo-img">
+        </a>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#engines">Engines</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="#contact" class="nav-cta">Start Growing</a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-grid-lines"></div>
+        <div class="hero-inner">
+            <p class="hero-tag">(01) — Growth Marketing Agency · Est. 2025</p>
+            <h1 class="hero-title">
+                DO THE<br>
+                <span class="accent">HARD</span><br>
+                THING.
+            </h1>
+            <div class="hero-subtitle-row">
+                <p class="hero-sub">We build marketing systems that don't just look good — they <strong
+                        style="color: var(--cream); font-weight: 600;">perform</strong>. Clarity-first strategy,
+                    creative execution, and multi-channel growth at scale.</p>
+                <span class="hero-index">03</span>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee-wrapper">
+        <div class="marquee-row marquee-row--top">
+            <div class="marquee-track">
+                <div class="marquee-item">Social Media Management <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Content Planning <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Branding <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Paid Media <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">SEO Optimisation <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Influencer Management <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Web Development <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Growth Reporting <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Social Media Management <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Content Planning <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Branding <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Paid Media <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">SEO Optimisation <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Influencer Management <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Web Development <span class="marquee-sep">×</span></div>
+                <div class="marquee-item">Growth Reporting <span class="marquee-sep">×</span></div>
+            </div>
+        </div>
+        <div class="marquee-row">
+            <div class="marquee-track marquee-track--rev">
+                <div class="marquee-item--alt">data-driven growth <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">multi-channel reach <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">clarity-first strategy <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">measurable results <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">brand distribution <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">performance creative <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">do the hard thing <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">data-driven growth <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">multi-channel reach <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">clarity-first strategy <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">measurable results <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">brand distribution <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">performance creative <span class="marquee-sep--alt">—</span></div>
+                <div class="marquee-item--alt">do the hard thing <span class="marquee-sep--alt">—</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+        <div class="about-grid reveal">
+            <div class="about-left">
+                <p class="section-label">(02) — What We Do</p>
+                <h2>Ambitious<br>Brands.<br><span style="color: var(--orange);">Trusted</span><br>Partner.</h2>
+            </div>
+            <div class="about-right">
+                <p>We exist to cut through the noise, hype, and vanity — delivering <strong>data-driven,
+                        humanity-centred</strong> marketing built to scale.</p>
+                <p>We don't just market brands — we <strong>distribute them</strong>. By managing influencer talent and
+                    leveraging our network, we ensure continuous reach and engagement from outside main social channels.
+                </p>
+                <p>Our multi-channel growth engine allows brands to grow exponentially through <strong>clarity-first
+                        marketing</strong> — combining strategy performance, and creative execution that turns attention
+                    into measurable business results.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="services-section" id="services">
+        <p class="section-label reveal">(03) — Our Services</p>
+        <div class="services-grid reveal">
+            <div class="service-card">
+                <div class="service-num">01</div>
+                <h3 class="service-title">Growth Strategy & Planning</h3>
+                <p class="service-desc">Roadmaps built on data, not guesswork. We map your channel mix, set measurable
+                    goals, and architect a growth plan that compounds over time.</p>
+                <div class="service-arrow">↗</div>
+            </div>
+            <div class="service-card">
+                <div class="service-num">02</div>
+                <h3 class="service-title">Media Management</h3>
+                <p class="service-desc">Paid & organic. We run performance campaigns across Meta, Google, and emerging
+                    channels while keeping your organic presence sharp and consistent.</p>
+                <div class="service-arrow">↗</div>
+            </div>
+            <div class="service-card">
+                <div class="service-num">03</div>
+                <h3 class="service-title">Influencer & Talent</h3>
+                <p class="service-desc">We source, manage, and activate creators who genuinely move product — not just
+                    rack up impressions. Reach from outside your own audience.</p>
+                <div class="service-arrow">↗</div>
+            </div>
+            <div class="service-card">
+                <div class="service-num">04</div>
+                <h3 class="service-title">Content Production</h3>
+                <p class="service-desc">High-velocity creative that actually converts. We produce, schedule, and iterate
+                    content built around your brand voice and your audience's behaviour.</p>
+                <div class="service-arrow">↗</div>
+            </div>
+            <div class="service-card">
+                <div class="service-num">05</div>
+                <h3 class="service-title">SEO & Web</h3>
+                <p class="service-desc">Technical SEO, content optimisation, and website development that builds
+                    long-term discoverability and converts traffic into customers.</p>
+                <div class="service-arrow">↗</div>
+            </div>
+            <div class="service-card">
+                <div class="service-num">06</div>
+                <h3 class="service-title">Analytics & Reporting</h3>
+                <p class="service-desc">Monthly performance reports with teeth. We surface the numbers that matter,
+                    explain what they mean, and tell you what to do next.</p>
+                <div class="service-arrow">↗</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ENGINES / PRICING -->
+    <section class="engines-section" id="engines">
+        <div class="engines-intro reveal">
+            <div>
+                <p class="section-label">(04) — Our Engines</p>
+                <h2>Pick Your<br><span style="color: var(--orange);">Growth</span><br>Engine.</h2>
+            </div>
+            <p>Subscription-based models charged monthly. Every engine is designed to build momentum — choose the one
+                that matches where you are and where you're going.</p>
+        </div>
+        <div class="engines-grid reveal">
+            <div class="engine-card">
+                <div class="engine-tag">Foundation Engine</div>
+                <div class="engine-name">Foundation</div>
+                <div class="engine-price">$800</div>
+                <ul class="engine-features">
+                    <li>Growth Strategy & KPI Roadmap</li>
+                    <li>Influencer & Talent Management</li>
+                    <li>Organic social media management</li>
+                    <li>SEO Basics</li>
+                    <li>Monthly performance reporting</li>
+                </ul>
+                <a href="#contact" class="engine-cta">Get Started</a>
+            </div>
+            <div class="engine-card featured">
+                <div class="engine-badge">Most Popular</div>
+                <div class="engine-tag">Acceleration Engine</div>
+                <div class="engine-name">Acceleration</div>
+                <div class="engine-price" style="color: var(--dark);">$1200</div>
+                <ul class="engine-features">
+                    <li>Everything in Foundation, plus:</li>
+                    <li>Paid & Organic media management</li>
+                    <li>Content production & education</li>
+                    <li>Weekly updates and strategy reports</li>
+                </ul>
+                <a href="#contact" class="engine-cta">Build Momentum</a>
+            </div>
+            <div class="engine-card">
+                <div class="engine-tag">Dominance Engine</div>
+                <div class="engine-name">Dominance</div>
+                <div class="engine-price">$1500</div>
+                <ul class="engine-features">
+                    <li>Everything in Acceleration, plus:</li>
+                    <li>Dedicated influencer access</li>
+                    <li>Full-funnel paid media</li>
+                    <li>Advanced SEO & demand gen</li>
+                    <li>Website development</li>
+                    <li>Priority support</li>
+                </ul>
+                <a href="#contact" class="engine-cta">Maximise Growth</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section class="manifesto-section">
+        <div class="manifesto-bg">PERFORM</div>
+        <div class="manifesto-content reveal">
+            <p class="section-label" style="justify-content: center;">(05) — Our Belief</p>
+            <blockquote>
+                "We often aren't able to communicate what we mean to express properly with more than words. The more we
+                think, the less we act. Soon, we're stuck in that moment of hesitation — when all we have to do is take
+                that step."
+            </blockquote>
+            <cite>— Expression Through Branding · 2025 – Today</cite>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact-section" id="contact">
+        <div class="contact-left reveal">
+            <p class="section-label">(06) — Get In Touch</p>
+            <h2>Let's<br>Build<br><span style="color: var(--orange);">This.</span></h2>
+            <p style="margin-top: 2rem;">Ready to grow? Tell us about your brand and we'll find the right engine for
+                you.</p>
+        </div>
+        <div class="contact-form reveal">
+            <div class="form-row">
+                <label class="form-label">Your Name</label>
+                <input type="text" class="form-input" placeholder="John Smith">
+            </div>
+            <div class="form-row">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-input" placeholder="john@yourbrand.com">
+            </div>
+            <div class="form-row">
+                <label class="form-label">Company / Brand</label>
+                <input type="text" class="form-input" placeholder="Acme Inc.">
+            </div>
+            <div class="form-row">
+                <label class="form-label">Interested In</label>
+                <select class="form-input" style="appearance: none; background: transparent; cursor: none;">
+                    <option value="" style="background: var(--dark);">Select an engine…</option>
+                    <option value="foundation" style="background: var(--dark);">Foundation — $800/mo</option>
+                    <option value="acceleration" style="background: var(--dark);">Acceleration — $1200/mo</option>
+                    <option value="dominance" style="background: var(--dark);">Dominance — $1500/mo</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label class="form-label">Tell Us More</label>
+                <textarea class="form-input" rows="3" placeholder="What's your biggest growth challenge right now?"
+                    style="resize: none;"></textarea>
+            </div>
+            <button class="form-submit">Send It →</button>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo"><span>.</span>3 Studios</div>
+        <span class="footer-copy">© 2025 .3 Studios. All rights reserved.</span>
+        <ul class="footer-links">
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Email</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursor-ring');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+
+        document.addEventListener('mousemove', e => {
+            mx = e.clientX; my = e.clientY;
+            cursor.style.left = mx + 'px';
+            cursor.style.top = my + 'px';
+        });
+
+        function animRing() {
+            rx += (mx - rx) * 0.12;
+            ry += (my - ry) * 0.12;
+            ring.style.left = rx + 'px';
+            ring.style.top = ry + 'px';
+            requestAnimationFrame(animRing);
+        }
+        animRing();
+
+        document.querySelectorAll('a, button, .service-card, .engine-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) rotate(45deg) scale(2.5)';
+                ring.style.width = '54px'; ring.style.height = '54px';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) rotate(45deg) scale(1)';
+                ring.style.width = '32px'; ring.style.height = '32px';
+            });
+        });
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('visible'); }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+
+</html>
