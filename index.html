@@ -856,6 +856,53 @@
             opacity: 1;
             transform: translateY(0);
         }
+
+        @media (max-width: 768px) {
+            nav {
+                grid-template-columns: auto 1fr auto;
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .nav-links a {
+                font-size: 0.65rem;
+            }
+
+            .nav-cta {
+                font-size: 0.65rem;
+                padding: 0.4rem 1rem;
+            }
+
+            .hero {
+                padding: 0 1.5rem;
+            }
+
+            .hero-inner {
+                padding-bottom: 3rem;
+                padding-top: 7rem;
+            }
+
+            .hero-title {
+                font-size: clamp(4rem, 14vw, 8rem);
+            }
+
+            .hero-sub {
+                font-size: 0.9rem;
+                max-width: 100%;
+            }
+
+            .hero-scroll {
+                right: 1.5rem;
+                bottom: 1.5rem;
+            }
+        }
     </style>
 </head>
 
