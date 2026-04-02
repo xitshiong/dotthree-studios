@@ -7,15 +7,17 @@
     <title>.3 Studios — Do the Hard Thing</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;1,300&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <style>
         :root {
             --orange: #FF5C1A;
-            --dark: #1e1e1e;
-            --darker: #141414;
+            --dark: #0a0a0a;
+            --dark2: #111111;
+            --dark3: #181818;
+            --mid: #222222;
+            --border: rgba(240, 237, 228, 0.08);
             --cream: #F0EDE4;
-            --mid: #2a2a2a;
         }
 
         *,
@@ -95,6 +97,13 @@
             align-items: center;
             padding: 1.5rem 3rem;
             mix-blend-mode: normal;
+            transition: background 0.3s, backdrop-filter 0.3s, border-bottom 0.3s;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
         }
 
         .nav-logo {
@@ -120,6 +129,7 @@
         .nav-links a {
             color: rgba(240, 237, 228, 0.5);
             text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
@@ -198,13 +208,13 @@
         }
 
         .hero-tag {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: rgba(240, 237, 228, 0.4);
             margin-bottom: 1rem;
             opacity: 0;
-            animation: fadeUp 0.8s 0.2s forwards;
         }
 
         .hero-title {
@@ -213,8 +223,12 @@
             line-height: 0.88;
             letter-spacing: -0.01em;
             color: var(--cream);
+        }
+
+        .hero-title .char {
+            display: inline-block;
             opacity: 0;
-            animation: fadeUp 1s 0.4s forwards;
+            transform: translateY(40px);
         }
 
         .hero-title .accent {
@@ -228,7 +242,6 @@
             margin-top: 2rem;
             width: 100%;
             opacity: 0;
-            animation: fadeUp 0.8s 0.7s forwards;
         }
 
         .hero-sub {
@@ -255,7 +268,6 @@
             align-items: center;
             gap: 0.5rem;
             opacity: 0;
-            animation: fadeUp 0.8s 1.1s forwards;
         }
 
         .hero-scroll span {
@@ -388,6 +400,7 @@
         }
 
         .section-label {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.65rem;
             letter-spacing: 0.25em;
             text-transform: uppercase;
@@ -450,26 +463,44 @@
 
         .service-card {
             padding: 3rem 2rem;
-            border-right: 1px solid rgba(240, 237, 228, 0.1);
+            border-right: 1px solid var(--border);
             position: relative;
             overflow: hidden;
             transition: background 0.3s;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--orange);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 0;
+        }
+
+        .service-card:hover::before {
+            transform: scaleY(1);
         }
 
         .service-card:last-child {
             border-right: none;
         }
 
-        .service-card:hover {
-            background: rgba(255, 92, 26, 0.04);
-        }
-
         .service-num {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.85rem;
             color: var(--orange);
             letter-spacing: 0.1em;
             margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s;
+        }
+
+        .service-card:hover .service-num {
+            color: var(--dark);
         }
 
         .service-title {
@@ -478,12 +509,26 @@
             line-height: 1;
             margin-bottom: 1rem;
             letter-spacing: 0.02em;
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s;
+        }
+
+        .service-card:hover .service-title {
+            color: var(--dark);
         }
 
         .service-desc {
             font-size: 0.85rem;
             line-height: 1.7;
             color: rgba(240, 237, 228, 0.5);
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s;
+        }
+
+        .service-card:hover .service-desc {
+            color: var(--dark);
         }
 
         .service-arrow {
@@ -498,20 +543,23 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
-            transition: opacity 0.2s, border-color 0.2s;
+            transition: opacity 0.2s, border-color 0.2s, color 0.3s;
             font-size: 0.85rem;
             color: var(--orange);
+            position: relative;
+            z-index: 1;
         }
 
         .service-card:hover .service-arrow {
             opacity: 1;
-            border-color: var(--orange);
+            border-color: var(--dark);
+            color: var(--dark);
         }
 
         /* ENGINES / PRICING */
         .engines-section {
             padding: 8rem 3rem;
-            background: var(--darker);
+            background: var(--dark2);
             position: relative;
         }
 
@@ -557,6 +605,7 @@
         }
 
         .engine-tag {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.65rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
@@ -747,6 +796,7 @@
         }
 
         .form-label {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.65rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
@@ -813,6 +863,7 @@
         }
 
         .footer-copy {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.72rem;
             color: rgba(240, 237, 228, 0.2);
             letter-spacing: 0.1em;
@@ -834,6 +885,86 @@
 
         .footer-links a:hover {
             color: var(--orange);
+        }
+
+        /* COUNTER STRIP */
+        .counter-strip {
+            display: flex;
+            background: var(--dark2);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .counter-col {
+            flex: 1;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-right: 1px solid var(--border);
+        }
+
+        .counter-col:last-child {
+            border-right: none;
+        }
+
+        .counter-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: var(--orange);
+            line-height: 1;
+            margin-bottom: 0.75rem;
+        }
+
+        .counter-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: rgba(240, 237, 228, 0.4);
+        }
+
+        /* ABOUT STATS */
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-item {
+            text-align: left;
+        }
+
+        .stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.6rem;
+            color: var(--orange);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(240, 237, 228, 0.4);
+        }
+
+        /* MANIFESTO GHOST */
+        .manifesto-ghost {
+            position: absolute;
+            inset: 0;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(10rem, 20vw, 18rem);
+            color: rgba(255, 92, 26, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            line-height: 1;
+            user-select: none;
         }
 
         /* HORIZONTAL RULE */
@@ -988,12 +1119,46 @@
         </div>
     </div>
 
+    <!-- COUNTER STRIP -->
+    <div class="counter-strip">
+        <div class="counter-col">
+            <div class="counter-num" data-target="47">0</div>
+            <div class="counter-label">Brands Grown</div>
+        </div>
+        <div class="counter-col">
+            <div class="counter-num" data-target="3" data-prefix="$" data-suffix="M+">$0M+</div>
+            <div class="counter-label">Revenue Driven</div>
+        </div>
+        <div class="counter-col">
+            <div class="counter-num" data-target="12">0</div>
+            <div class="counter-label">Industries Served</div>
+        </div>
+        <div class="counter-col">
+            <div class="counter-num" data-target="98" data-suffix="%">0%</div>
+            <div class="counter-label">Client Retention</div>
+        </div>
+    </div>
+
     <!-- ABOUT -->
     <section class="section" id="about">
         <div class="about-grid reveal">
             <div class="about-left">
                 <p class="section-label">(02) — What We Do</p>
                 <h2>Ambitious<br>Brands.<br><span style="color: var(--orange);">Trusted</span><br>Partner.</h2>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <div class="stat-num">3×</div>
+                        <div class="stat-label">Avg. growth rate</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num">60d</div>
+                        <div class="stat-label">Avg. time to results</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-num">100%</div>
+                        <div class="stat-label">Transparent reporting</div>
+                    </div>
+                </div>
             </div>
             <div class="about-right">
                 <p>We exist to cut through the noise, hype, and vanity — delivering <strong>data-driven,
@@ -1113,7 +1278,7 @@
 
     <!-- MANIFESTO -->
     <section class="manifesto-section">
-        <div class="manifesto-bg">PERFORM</div>
+        <div class="manifesto-ghost">PERFORM</div>
         <div class="manifesto-content reveal">
             <p class="section-label" style="justify-content: center;">(05) — Our Belief</p>
             <blockquote>
@@ -1213,6 +1378,111 @@
         }, { threshold: 0.15 });
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Nav scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 60) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Split chars function
+        function splitChars(el) {
+            const text = el.innerHTML;
+            const chars = [];
+            let newHTML = '';
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                if (char === '<') {
+                    let tag = '<';
+                    i++;
+                    while (i < text.length && text[i] !== '>') {
+                        tag += text[i];
+                        i++;
+                    }
+                    tag += '>';
+                    newHTML += tag;
+                } else if (char.trim() !== '') {
+                    const span = `<span class="char" style="display:inline-block">${char}</span>`;
+                    newHTML += span;
+                    chars.push(span);
+                } else {
+                    newHTML += char;
+                }
+            }
+
+            el.innerHTML = newHTML;
+            return el.querySelectorAll('.char');
+        }
+
+        // Hero animations
+        const heroTitle = document.querySelector('.hero-title');
+        const chars = splitChars(heroTitle);
+
+        const tl = gsap.timeline();
+        tl.to('.hero-tag', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+            .to(chars, { opacity: 1, y: 0, duration: 0.6, stagger: 0.022, ease: 'power3.out' }, '-=0.4')
+            .to('.hero-subtitle-row', { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out' }, '-=0.3')
+            .to('.hero-scroll', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5');
+
+        // ScrollTrigger reveals
+        gsap.utils.toArray('.reveal').forEach(el => {
+            gsap.to(el, {
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 82%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 1,
+                y: 0,
+                duration: 0.85,
+                ease: 'power3.out'
+            });
+        });
+
+        // Counter animation
+        const counters = document.querySelectorAll('.counter-num');
+        counters.forEach(counter => {
+            const target = parseInt(counter.dataset.target);
+            const prefix = counter.dataset.prefix || '';
+            const suffix = counter.dataset.suffix || '';
+
+            gsap.to(counter, {
+                scrollTrigger: {
+                    trigger: counter,
+                    start: 'top 85%',
+                    once: true
+                },
+                innerHTML: target,
+                duration: 1.8,
+                ease: 'power2.out',
+                snap: { innerHTML: 1 },
+                onUpdate: function () {
+                    counter.innerHTML = prefix + Math.ceil(counter.innerHTML) + suffix;
+                }
+            });
+        });
+
+        // Manifesto parallax
+        gsap.to('.manifesto-ghost', {
+            scrollTrigger: {
+                trigger: '.manifesto-section',
+                scrub: 1
+            },
+            y: -60,
+            ease: 'none'
+        });
     </script>
 </body>
 
